@@ -1,0 +1,15 @@
+name: responder
+version: 0.1.0
+
+authors:
+  - Phillip Oldham <phillip@greenedgecloud.com>
+
+description: |
+  A simple RESP server which accepts requests,
+  pattern matches the command using regexp,
+  and returns a corresponding response from
+  a YAML file.
+
+dependencies:
+  resp-server:
+    github: Green-Edge/resp.cr

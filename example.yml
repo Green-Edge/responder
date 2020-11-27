@@ -1,0 +1,10 @@
+host: 0.0.0.0
+port: 3001
+rules:
+  - match: "^PING"
+    wait: 1000
+    response: "PONG"
+  - match: "HELLO ([^\\s]+)"  # regex
+    wait: 1000  # ms
+    response: >-
+      {"success": true, "result": "HELLO $1"}
