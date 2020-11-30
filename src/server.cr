@@ -68,12 +68,10 @@ class Responder
     Log.debug {"#{self.class}: found rule #{rule}"}
 
     if rule.nil?
-      return <<-END
-      {
-        "success": false,
-        "error": "unknown operation '#{operation}'"
-      }
-      END
+      return {
+        "success" => false,
+        "error" => "unknown operation '#{operation}'"
+      }.to_json
     end
 
     response = rule["response"].to_json
