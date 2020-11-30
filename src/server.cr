@@ -39,6 +39,7 @@ class Responder
     server.listen do |conn|
       operation, args = conn.parse
       conn.send_string process(operation, args)
+      conn.close
     end
   end
 
