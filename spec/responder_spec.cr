@@ -12,7 +12,7 @@ describe "responder" do
     it "should respond to a simple 'PING' command" do
       responder = Responder.new(configfile)
 
-      responder.process("PING", [] of String).should eq("PONG")
+      responder.process("PING", [] of String).should eq("\"PONG\"")
     end
 
     it "should process to a standard 'HELLO' command" do

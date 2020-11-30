@@ -6,5 +6,6 @@ rules:
     response: "PONG"
   - match: "HELLO ([^\\s]+)"  # regex
     wait: 1000  # ms
-    response: >-
-      {"success": true, "result": "HELLO $1"}
+    response:
+      success: true
+      result: "HELLO $1"

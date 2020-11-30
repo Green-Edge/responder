@@ -1,3 +1,4 @@
+require "json"
 require "log"
 require "yaml"
 require "resp-server"
@@ -74,7 +75,7 @@ class Responder
       END
     end
 
-    response = rule["response"].to_s
+    response = rule["response"].to_json
 
     if md = opstring.match(/#{rule["match"]}/)
       md.to_a.each_with_index do |val, i|
