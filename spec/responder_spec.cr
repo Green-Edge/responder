@@ -28,9 +28,9 @@ describe "responder" do
     it "should respond with an error" do
       responder = Responder.new(configfile)
 
-      result = responder.process("unknown", [] of String)
+      result = responder.process("badop", [] of String)
       JSON.parse(result)["success"].should eq(false)
-      JSON.parse(result)["error"].should eq("unknown operation 'unknown'")
+      JSON.parse(result)["error"].should eq("unknown operation: badop")
     end
   end
 end

@@ -53,7 +53,7 @@ class Responder
     opstring =
       case args
       when Array(String)
-        "#{operation} " + args.join(" ")
+        ("#{operation} " + args.join(" ")).strip
       when String
         "#{operation} #{args}"
       else
@@ -70,7 +70,7 @@ class Responder
     if rule.nil?
       return {
         "success" => false,
-        "error" => "unknown operation '#{operation}'"
+        "error" => "unknown operation: #{opstring}"
       }.to_json
     end
 
