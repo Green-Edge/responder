@@ -9,22 +9,27 @@ class Responder
   @config : YAML::Any = YAML.parse "{}"
 
   def initialize(configfile : String)
-    begin
-      @config = File.open(configfile) do |file|
-        YAML.parse(file)
-      end
-    rescue File::NotFoundError
-      Log.error { "cannot read file: #{configfile}" }
-      exit(1)
-    rescue ex : YAML::ParseException
-      Log.error { "#{configfile} contains invalid YAML: #{ex}" }
-      exit(1)
-    end
+    @configfile = configfile
 
-    Log.debug {"Config loaded from #{configfile}, rules loaded: #{@config["rules"].size}"}
+    reload_config()
 
     @port = @config["port"]? ? @config["port"].as_i : 6379
     @host = @config["host"]? ? @config["host"].as_s : "127.0.0.1"
+  end
+
+  def reload_config
+    begin
+      @config = File.open(@configfile) do |file|
+        YAML.parse(file)
+      end
+    rescue File::NotFoundError
+      Log.error { "cannot read file: #{@configfile}" }
+      exit(1)
+    rescue ex : YAML::ParseException
+      raise("#{@configfile} contains invalid YAML: #{ex}")
+    end
+
+    Log.debug {"Config loaded from #{@configfile}, rules loaded: #{@config["rules"].size}"}
   end
 
   def run
@@ -37,6 +42,8 @@ class Responder
   end
 
   def process(operation, args)
+    reload_config()
+
     Log.debug {"#{self.class}: processing #{operation} with args: #{args}"}
     operation =
       "#{operation}".strip
