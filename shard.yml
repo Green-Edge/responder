@@ -13,3 +13,4 @@ description: |
 dependencies:
   resp-server:
     github: Green-Edge/resp.cr
+    branch: master

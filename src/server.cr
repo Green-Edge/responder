@@ -39,7 +39,6 @@ class Responder
     server.listen do |conn|
       operation, args = conn.parse
       conn.send_string process(operation, args)
-      conn.close
     end
   end
 
@@ -55,10 +54,14 @@ class Responder
       when Array(String)
         ("#{operation} " + args.join(" ")).strip
       when String
-        "#{operation} #{args}"
+        "#{operation} #{args}".strip
       else
-        operation
+        operation.strip
       end
+
+    if opstring.empty?
+      return ""
+    end
 
     matches = @config["rules"].as_a.map do |rule|
       /#{rule["match"]}/.match(opstring) ? rule : nil
@@ -68,9 +71,11 @@ class Responder
     Log.debug {"#{self.class}: found rule #{rule}"}
 
     if rule.nil?
+      error = "unknown operation: #{opstring}"
+      Log.error {"#{self.class}: #{error}"}
       return {
         "success" => false,
-        "error" => "unknown operation: #{opstring}"
+        "error" => error
       }.to_json
     end
 
