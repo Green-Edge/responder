@@ -49,15 +49,7 @@ class Responder
     operation =
       "#{operation}".strip
 
-    opstring =
-      case args
-      when Array(String)
-        ("#{operation} " + args.join(" ")).strip
-      when String
-        "#{operation} #{args}".strip
-      else
-        operation.strip
-      end
+    opstring = opstringify(operation, args)
 
     if opstring.empty?
       return ""
@@ -92,5 +84,16 @@ class Responder
     end
 
     response
+  end
+
+  private def opstringify(operation, args)
+    case args
+    when Array(String)
+      ("#{operation} " + args.join(" ")).strip
+    when String
+      "#{operation} #{args}".strip
+    else
+      operation.strip
+    end
   end
 end
